@@ -5,9 +5,11 @@
 ?>
 
 <div>
-	<script type="text/javascript">
+	<script src=<?php echo path_with_includes("javascripts/process.js"); ?>></script>
+	<script>
 		$(document).ready(function(){
-			submitLogin();
+			$("#username").setLabel("Username").require().showError();
+			$("#password").setLabel("Password").require().showError();
 		});
 	</script>
 	<fieldset>
@@ -28,6 +30,7 @@
 					html_link("NEW MEMBER?!", "register.php");
 				?>
 			</span>
+			<span class="error"><?php echo $_SESSION["errors"]["message"]; ?></span>
 		</form>
 	</fieldset>
 </div>

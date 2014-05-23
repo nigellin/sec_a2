@@ -1,7 +1,5 @@
 <?php
-	function path_with_includes($pathname){
-		return "includes/".$pathname;
-	}
+	function path_with_includes($pathname){ return "includes/".$pathname; }
 
 	function html_inputfield($id, $attr= array(),  $label= "", $label_atrr= array(), $to_string= false){
 		if($label)
@@ -81,7 +79,7 @@
 		return serialize($info);
 	}
 
-	function file_write_content($filename, $data, $flags= FILE_APPEND){
+	function file_write_content($filename, $data, $flags= 0){
 		if(is_array($data))
 			$data= join(";;", $data);
 

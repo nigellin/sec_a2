@@ -1,13 +1,15 @@
 <?php
 	$layout["title"]= "Register";
-	
+
 	include 'includes/layouts/header.php';
 ?>
 
 <div>
+	<script src=<?php echo path_with_includes("javascripts/process.js"); ?>></script>
+
 	<script type="text/javascript">
 		$(document).ready(function(){
-			submitRegister();
+			
 		});
 	</script>
 	<fieldset>
@@ -91,6 +93,8 @@
 					html_link("LOGIN", "index.php");
 				?>
 			</span>
+
+			<span class="error"><?php echo $_SESSION["errors"]["message"]; ?></span>
 		</form>
 	</fieldset>
 </div>

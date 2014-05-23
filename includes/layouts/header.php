@@ -11,7 +11,8 @@
 
 		<script src=<?php echo path_with_includes("javascripts/jquery-2.1.1.min.js"); ?>></script>
 		<script src=<?php echo path_with_includes("javascripts/functions.js"); ?>></script>
-
+		<script src=<?php echo path_with_includes("javascripts/crypto.js"); ?>></script>
+		
 		<?php echo $layout["head_content"]; ?>
 	</head>
 	<body>

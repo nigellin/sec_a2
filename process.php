@@ -1,6 +1,4 @@
 <?php
-	include "./includes/layouts/init.php";
-
 	$layout["title"]= "Process Action";
 
 	include 'includes/layouts/header.php';
