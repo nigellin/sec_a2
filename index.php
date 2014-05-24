@@ -8,8 +8,7 @@
 	<script src=<?php echo path_with_includes("javascripts/process.js"); ?>></script>
 	<script>
 		$(document).ready(function(){
-			$("#username").setLabel("Username").require().showError();
-			$("#password").setLabel("Password").require().showError();
+			submitLoginForm();
 		});
 	</script>
 	<fieldset>
@@ -25,6 +24,7 @@
 			<span style="width: 200px;"><hr/></span>
 			<span>
 				<?php
+					html_inputfield("key", array("type"=> "hidden"));
 					html_submit_button("Login");
 					echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 					html_link("NEW MEMBER?!", "register.php");

@@ -73,6 +73,10 @@
 
 	function sanitize(&$value){ $value= htmlentities(trim($value)); }
 
+	function encrypt_array(&$value, $key){ $value= encrypt($value, $key); }
+
+	function decrypt_array(&$value, $key){ $value= decrypt($value, $key); }
+
 	function file_to_array($filename){
 		$info= file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
 
@@ -125,18 +129,32 @@
 		return empty($user)=== true;
 	}
 
-	function validate_required($ids){
+	function valid_user($username, $password){
+		$user= unserialize(get_user_info($username));
+
+		if(empty($user) || $user["password"]!== $password){
+			$_SESSION["errors"]["message"]= "invalid username or password";
+			return false;
+		}
+
+		return true;
+	}
+
+	function has_errors(){
+		return !empty($_SESSION["errors"]);
+	}
+
+	function validate_required($ids, $excluded= array()){
 		if(is_assoc_array($ids))
-			foreach($ids as $key=> $value)
-				if(empty($value))
+			foreach($ids as $key=> $value){
+				if(!in_array($key, $excluded) && empty($value))
 					$_SESSION["errors"][$key]= "cannot contained empty value";
-		elseif(empty($ids))
-			$_SESSION["errors"]["message"]= "cannot contained empty value";
+			}
+		else
+			if(empty($ids))
+				$_SESSION["errors"]["message"]= "cannot contained empty value";
 
-		if(empty($_SESSION["errors"]))
-			return true;
-
-		return false;
+		return has_errors();
 	}
 
 	function clear_temp_sessions(){

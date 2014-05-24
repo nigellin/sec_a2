@@ -9,7 +9,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			
+
 		});
 	</script>
 	<fieldset>
@@ -99,7 +99,4 @@
 	</fieldset>
 </div>
 
-<?php
-	clear_temp_sessions();
-	include 'includes/layouts/footer.php';
-?>
+<?php include 'includes/layouts/footer.php'; ?>

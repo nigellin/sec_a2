@@ -1,5 +1,5 @@
 	<footer>
-		<?= @$layout["footer_content"]; ?>
+		<?php echo $layout["footer_content"]; ?>
 	</footer>
 	</body>
 </html>
