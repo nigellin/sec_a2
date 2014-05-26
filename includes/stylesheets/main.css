@@ -21,10 +21,12 @@ select{
 	margin:		5px;
 }
 
-.error, .success{
-	font-weight:	600;
+.error, .success, .fail, .info{
 	margin-left:	10px;
 	margin-right:	10px;
+	font-family:	monospace;
+	font-weight:	600;
 }
-.success{	color: cornflowerblue; }
-.error{		color: red; }
+.info{ color: cornflowerblue; }
+.success{ color: lightgreen; }
+.error, .fail{ color: red; }

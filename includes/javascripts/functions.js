@@ -27,7 +27,7 @@
 
 					case "length":
 						if(val.length!== value)
-							message= label +" require exact "+ length+ " characters";
+							message= label +" require exact "+ value+ " characters";
 
 						break;
 
@@ -43,7 +43,14 @@
 
 					case "range":
 						if(val.length< value[0] || val.length> value[1])
-							message= label+ " required between "+ value[0]+ " to "+ value[1]+ " characters";
+							message= label+ " require between "+ value[0]+ " to "+ value[1]+ " characters";
+						break;
+
+
+					case "unsignedint":
+						if(!/^[0-9]+$/.test(val))
+							message= label+ " require unsigned digits only";
+
 						break;
 
 					case "equals":
