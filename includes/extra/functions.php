@@ -24,11 +24,30 @@
 		return $infos[$id];
 	}
 
+	function get_trasactions_by_status($username= "", $status= ""){
+		if(empty($username))
+			$infos= get_transactions();
+		else
+			$infos= get_transaction_by_username($username);
+
+		if(empty($status))
+			return $infos;
+
+		foreach($infos as $value)
+			if($value["status"]== $status)
+				$results[]= $value;
+
+		return $results;
+	}
+
 	function get_transaction_by_username($username){
 		$infos= get_transactions();
 
-		$keys= array_keys($infos, $username);
-		
+		foreach($infos as $value)
+			if($value["username"]== $username)
+				$results[]= $value;
+
+		return $results;
 	}
 
 	function get_users(){

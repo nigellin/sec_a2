@@ -1,9 +1,5 @@
-function logout(){
-	$("a#logout").on("click", function(){});
-}
-
 function submitLoginForm(){
-	$("form").on("submit", function(){
+	$("form#loginform").on("submit", function(){
 		clearErrorMessages();
 		var results= [];
 
@@ -17,7 +13,7 @@ function submitLoginForm(){
 }
 
 function submitRegisterForm(){
-	$("form").on("submit", function(){
+	$("form#registform").on("submit", function(){
 		clearErrorMessages();
 
 		var results	= [];

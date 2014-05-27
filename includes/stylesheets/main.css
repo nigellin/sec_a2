@@ -11,6 +11,8 @@ form> span> label{
 	width:			160px;
 }
 
+form#logoutform{ display: inline; }
+
 a{
 	text-decoration:	none;
 	color:				cornflowerblue;
@@ -28,5 +30,5 @@ select{
 	font-weight:	600;
 }
 .info{ color: cornflowerblue; }
-.success{ color: lightgreen; }
+.success{ color: #00cc00; }
 .error, .fail{ color: red; }

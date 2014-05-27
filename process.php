@@ -1,6 +1,7 @@
+<link rel="stylesheet" href="includes/stylesheets/main.css"/>
 <?php
 	include_once 'includes/extra/init.php';
-	
+
 	clear_temp_sessions();
 
 	if(!empty($_POST)){
@@ -26,7 +27,12 @@
 
 			case "logout":
 				unset($_SESSION["user"]);
-				echo "success";
+
+				echo "<h3 class='success'>logged out success</h3>";
+				echo "<h3 class='success'>redirect to index within 3 seconds...</h3>";
+
+				redirect("index.php", 3);
+
 				break;
 		}
 

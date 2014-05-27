@@ -53,8 +53,13 @@
 		echo $options;
 	}
 
-	function html_submit_button($value, $attr= array()){
-		echo "<input type='submit' value='$value' ".to_attr_str($attr)."/>";
+	function html_submit_button($value, $attr= array(), $to_string= false){
+		$button= "<input type='submit' value='$value' ".to_attr_str($attr)."/>";
+
+		if($to_string)
+			return $button;
+
+		echo $button;
 	}
 
 	function html_link($name, $href= "", $attr= array(), $to_string= false){
@@ -66,11 +71,14 @@
 		echo $link;
 	}
 
-	function html_logout_link(){
-		$link= "<form action='process.php?action=logout' id='logout'>".html_link("LOGOUT", "#", array(), true)."</form>";
-		$js="<script>$(\"form#logout a\").on(\"click\", function(){ $(\"form#logout\").submit(); })</script>";
+	function html_logout_button($to_string= false){
+		$output= "<form action=\"process.php?action=logout\" method='post' id='logoutform'>";
+		$output.= html_submit_button("logout", array("name"=> "logout"), true)."</form>";
 
-		echo $link.$js;
+		if($to_string)
+			return $output;
+
+		echo $output;
 	}
 
 	function html_span_error($id){
@@ -82,7 +90,7 @@
 
 		if(is_array($attr))
 			foreach($attr as $key=> $value)
-				$output.= $key."='$value' ";
+				$output.= "$key='$value' ";
 
 		return $output;
 	}
@@ -109,8 +117,14 @@
 		return array_keys($array)!= range(0, count($array)- 1);
 	}
 
-	function redirect($url){
-		header("location: $url");
+	function redirect($url= "", $interval= -1){
+		if($interval> -1){
+			if(!empty($url))
+				$url= "url= $url";
+
+			header("refresh: $interval; $url");
+		}else
+			header("location: $url");
 	}
 
 	function has_errors(){

@@ -113,7 +113,7 @@
 		?>
 	</span>
 
-	<span class="error"><?php echo $_SESSION["errors"]["message"]; ?></span>
+	<?php html_span_error("message"); ?>
 </form>
 <?php
 	else:

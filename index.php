@@ -10,7 +10,7 @@
 	});
 </script>
 	<?php if(!valid_session("user")): ?>
-<form method="post" action="process.php?action=login">
+<form method="post" action="process.php?action=login" id="loginform">
 	<span>
 		<?php
 			html_inputfield("username", array("maxLength"=> "25", "value"=> $_SESSION["temp"]["username"]), "Username");
@@ -37,11 +37,11 @@
 
 <?php
 	else:
-		html_link("profile", "profile.php", array("style"=> "text-decoration: underline"));
+		html_link("PROFILE", "profile.php");
 		insert_tab();
-		html_link("transactions", "transaction.php");
+		html_link("TRANSACTION", "transaction.php");
 		insert_tab();
-		html_logout_link();
+		html_logout_button();
 	endif;
 
 	clear_temp_sessions();
