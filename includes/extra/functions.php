@@ -28,7 +28,7 @@
 		if(empty($username))
 			$infos= get_transactions();
 		else
-			$infos= get_transaction_by_username($username);
+			$infos= get_transactions_by_username($username);
 
 		if(empty($status))
 			return $infos;
@@ -40,7 +40,7 @@
 		return $results;
 	}
 
-	function get_transaction_by_username($username){
+	function get_transactions_by_username($username){
 		$infos= get_transactions();
 
 		foreach($infos as $value)

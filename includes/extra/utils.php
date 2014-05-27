@@ -85,6 +85,37 @@
 		echo "<span class=\"error\">".$_SESSION["errors"][$id]."</span>";
 	}
 
+	function html_table($data, $th= array(), $attr= array(), $to_string= false){
+		$table= "<table ".to_attr_str($attr).">";
+
+		if(!empty($th)){
+			$head= "<tr>";
+			foreach($th as $value)
+				$head.= "<th>$value</th>";
+
+			$head.= "</tr>";
+		}
+
+		foreach($data as $value){
+			$body.= "<tr>";
+
+			if(is_array($value)){
+				foreach($value as $v)
+					$body.= "<td>$v</td>";
+			}else
+				$body.= "<td>$value</td>";
+
+			$body.= "</tr>";
+		}
+
+		$table.= $head.$body."</table>";
+
+		if($to_string)
+			return $table;
+
+		echo $table;
+	}
+
 	function to_attr_str($attr){
 		$output= "";
 
@@ -117,8 +148,8 @@
 		return array_keys($array)!= range(0, count($array)- 1);
 	}
 
-	function redirect($url= "", $interval= -1){
-		if($interval> -1){
+	function redirect($url= "", $interval= 0){
+		if($interval> 0){
 			if(!empty($url))
 				$url= "url= $url";
 
