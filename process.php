@@ -10,17 +10,11 @@
 		switch($_GET["action"]){
 			case "login":
 
-				validate_required($_POST, array("key"));
-
-				if(!has_errors() && valid_user($_POST["username"], $_POST["password"])){
-
-				}
-
 				$url= "index.php";
 				break;
 
 			case "register":
-				validate_required($_POST);
+
 
 				$url= "register.php";
 				break;
@@ -34,13 +28,23 @@
 				redirect("index.php", 3);
 
 				break;
+
+			case "updatetransactions":
+				if($_SESSION['user']['role']=== "ADMIN"){
+
+				}
+				break;
+
+			case "updateipblacklist":
+
+				break;
 		}
 
 		if(has_errors()){
 			foreach($_POST as $key=> $value)
 				$_SESSION["temp"][$key]= $value;
-
-			redirect($url);
 		}
+
+		redirect($url);
 	}else
-		echo "<h3 class='error'>ERROR: invalid access</h3>";
+		echo "<dpan class='error'>ERROR: invalid access</span>";

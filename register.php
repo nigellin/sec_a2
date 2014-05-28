@@ -11,7 +11,7 @@
 		submitRegisterForm();
 	});
 </script>
-<form method="post" action="process.php?action=register">
+<form method="post" action="process.php?action=register" id="registerform">
 	<span>
 		<?php
 			html_inputfield("username", array("maxLength"=> "25", "value"=> $_SESSION["temp"]["username"]), "Username");
@@ -117,7 +117,7 @@
 </form>
 <?php
 	else:
-		echo "<h3 class='error'>ERROR: invalid access</h3>";
+		echo "<span class='error'>ERROR: invalid access</span>";
 	endif;
 
 	clear_temp_sessions();

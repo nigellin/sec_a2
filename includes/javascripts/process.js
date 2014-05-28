@@ -13,7 +13,7 @@ function submitLoginForm(){
 }
 
 function submitRegisterForm(){
-	$("form#registform").on("submit", function(){
+	$("form#registerform").on("submit", function(){
 		clearErrorMessages();
 
 		var results	= [];
@@ -32,7 +32,7 @@ function submitRegisterForm(){
 		//results.push($("#").validate("", {}));
 
 		var result	= getResult(results);
-
+		
 		return result;
 	});
 }

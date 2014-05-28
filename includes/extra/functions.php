@@ -9,6 +9,7 @@
 		for($i= 0; $i< count($infos); $i++){
 			$info= explode(";;", $infos[$i]);
 			$trasactions[$info[0]]= array(
+				"id"		=> $info[0],
 				"username"	=> $info[1],
 				"time"		=> $info[2],
 				"amount"	=> $info[3],
@@ -50,6 +51,19 @@
 		return $results;
 	}
 
+	function get_blocked_ip(){
+		$ips= file_to_array(PATH."data/ip_blacklist.txt");
+
+		return $ips;
+	}
+
+	function is_blocked_ip($ip){
+		if(in_array($ip, get_blocked_ip()))
+			return true;
+
+		return false;
+	}
+
 	function get_users(){
 		$infos= file_to_array(PATH."data/users.txt");
 
@@ -76,11 +90,6 @@
 	function get_user($username){
 		$users= get_users();
 		return $users[$username];
-	}
-
-	function valid_username($username){
-		$user= get_user($username);
-		return empty($user)=== true;
 	}
 
 	function valid_user($username, $password){

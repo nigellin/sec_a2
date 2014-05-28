@@ -1,5 +1,9 @@
 label, input, a{ font-size: 16px; }
-
+h3{
+	padding:	0;
+	margin:		0;
+	border:		0;
+}
 form> span{
 	display:	block;
 	margin:		5px;
@@ -11,17 +15,22 @@ form> span> label{
 	width:			160px;
 }
 
-form#logoutform{ display: inline; }
-
 a{
 	text-decoration:	none;
-	color:				cornflowerblue;
+	color:				#3366ff;
 }
 
 select{
 	font-size:	15px;
 	margin:		5px;
 }
+
+th{ background-color: lightgray; }
+th:hover{ cursor: pointer; }
+td, th{ min-width: 160px; }
+tr:nth-child(2n){ background-color: #eeeeee; }
+
+form#logoutform{ display: inline; }
 
 .error, .success, .fail, .info{
 	margin-left:	10px;
@@ -32,3 +41,4 @@ select{
 .info{ color: cornflowerblue; }
 .success{ color: #00cc00; }
 .error, .fail{ color: red; }
+

@@ -81,34 +81,69 @@
 		echo $output;
 	}
 
-	function html_span_error($id){
-		echo "<span class=\"error\">".$_SESSION["errors"][$id]."</span>";
+	function html_span_error($id){ echo "<span class=\"error\">".$_SESSION["errors"][$id]."</span>"; }
+
+	function html_table_form($data, $th, $form_attr, $tfoot_val){
+		$form_attr= to_attr_str($form_attr);
+
+		$form= "<form $form_attr>";
+		$table= "<table>";
+
+		$thead= "<thead><tr>";
+		foreach($th as $value)
+			$thead.= "<th>$value</th>";
+		$thead.= "</tr></thead>";
+
+		$tbody= "<tbody>";
+		foreach($data as $value):
+			$tbody.="<tr>";
+			foreach($value as $v)
+				$tbody.= "<td>$v</td>";
+			$tbody.="<td><input type='checkbox' name='checked[]' value='".$value['id']."'/></td></tr>";
+		endforeach;
+		$tbody.="</tbody>";
+
+		$tfoot= "<tfoot><tr><td colspan='".count($th)."'><center>";
+		foreach($tfoot_val as $value)
+			$tfoot.= $value;
+		$tfoot.= "</center></td></tr></tfoot>";
+
+		$table.= $thead.$tbody.$tfoot."</table>";
+		$form.=	$table."</form>";
+
+		echo $form;
 	}
 
 	function html_table($data, $th= array(), $attr= array(), $to_string= false){
 		$table= "<table ".to_attr_str($attr).">";
 
 		if(!empty($th)){
-			$head= "<tr>";
+			$thead= "<thead><tr>";
 			foreach($th as $value)
-				$head.= "<th>$value</th>";
+				$thead.= "<th>$value</th>";
 
-			$head.= "</tr>";
+			$thead.= "</tr></thead>";
 		}
 
-		foreach($data as $value){
-			$body.= "<tr>";
+		$tbody= "<tbody>";
+		if(!empty($data))
+			foreach($data as $value){
+				$tbody.= "<tr>";
 
-			if(is_array($value)){
-				foreach($value as $v)
-					$body.= "<td>$v</td>";
-			}else
-				$body.= "<td>$value</td>";
+				if(is_array($value)){
+					foreach($value as $v)
+						$tbody.= "<td>$v</td>";
+				}else
+					$tbody.= "<td>$value</td>";
 
-			$body.= "</tr>";
-		}
+				$tbody.= "</tr>";
+			}
+		else
+			$tbody.= "<tr><td colspan='".count($th)."'><center><i>no data entry</i></center></td></tr>";
 
-		$table.= $head.$body."</table>";
+		$tbody.= "</tbody>";
+
+		$table.= $thead.$tbody."</table>";
 
 		if($to_string)
 			return $table;
@@ -128,6 +163,16 @@
 
 	function sanitize(&$value){ $value= htmlentities(trim($value)); }
 
+	function valid_require($val){ return !empty($val); }
+	function valid_email($val){ return filter_var($val, FILTER_VALIDATE_EMAIL); }
+	function valid_length($val, $len){ return strlen($val)== $len; }
+	function valid_range($val, $min, $max){ return strlen($val)>= $min && strlne($val)<= $max; }
+	function valid_equals($val, $val1){ return $val=== $val1; }
+	function valid_unsignedint($val){ return filter_var($val, FILTER_VALIDATE_INT) && $val>= 0; }
+	function valid_username($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ _-][a-zA-Z0-9]+)*$/", $val); }
+	function valid_name($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/", $val); }
+	function valid_ip($val){ return filter_var($val, FILTER_VALIDATE_IP); }
+	
 	function file_to_array($filename){
 		$info= file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
 
@@ -149,6 +194,9 @@
 	}
 
 	function redirect($url= "", $interval= 0){
+		if(empty($url))
+			return;
+
 		if($interval> 0){
 			if(!empty($url))
 				$url= "url= $url";
@@ -158,25 +206,14 @@
 			header("location: $url");
 	}
 
-	function has_errors(){
-		return !empty($_SESSION["errors"]);
-	}
+	function has_errors(){ return !empty($_SESSION["errors"]); }
 
-	function validate_required($ids, $excluded= array()){
-		if(is_assoc_array($ids))
-			foreach($ids as $key=> $value){
-				if(!in_array($key, $excluded) && empty($value))
-					$_SESSION["errors"][$key]= "cannot contained empty value";
-			}
-		else
-			if(empty($ids))
-				$_SESSION["errors"]["message"]= "cannot contained empty value";
-
-		return has_errors();
+	function set_error($key, $message){
+		$_SESSION["errors"][$key]= $message;
 	}
 
 	function valid_session($id){
-		if(isset($_SESSION[$id]) && !empty($_SESSION))
+		if(!empty($_SESSION[$id]))
 			return true;
 
 		return false;

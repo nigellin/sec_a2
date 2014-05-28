@@ -46,7 +46,6 @@
 							message= label+ " require between "+ value[0]+ " to "+ value[1]+ " characters";
 						break;
 
-
 					case "unsignedint":
 						if(!/^[0-9]+$/.test(val))
 							message= label+ " require unsigned digits only";
@@ -64,14 +63,13 @@
 						break;
 
 					case "username":
-						if(!/^[a-zA-Z]\w*$/.test())
+						if(!/^[a-zA-Z0-9]+(?:[ _-][a-zA-Z0-9]+)*$/.test())
 							message= "contained invalid characters";
-
 						break;
-					case "name":
-						if(!/^[a-zA-Z][a-zA-Z'\- ]+$/.test(val))
-							message= "contained invalid characters";
 
+					case "name":
+						if(!/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/.test(val))
+							message= "contained invalid characters";
 						break;
 				}
 

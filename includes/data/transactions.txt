@@ -1,10 +1,10 @@
 1;;abc;;123123;;12;;approved
 2;;abc;;42123;;21;;rejected
-3;;efg;;12334212;;2;;process
+3;;efg;;12334212;;2;;pending
 4;;abc;;13324123;;23;;rejected
-5;;efg;;132242;;2;;process
+5;;efg;;132242;;2;;pending
 6;;hij;;12324;;1;;approved
-7;;abc;;123123;;43;;process
+7;;abc;;123123;;43;;pending
 8;;efg;;14123432;;23;;rejected
 9;;hij;;123123123;;231;;approved
 0;;hij;;1123324;;123;;rejected
