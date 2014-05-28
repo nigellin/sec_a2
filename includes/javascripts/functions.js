@@ -16,7 +16,7 @@
 		var options	= $.extend({}, defaults, options);
 		var message	= "";
 		var hasError= false;
-		var val		= this.val();
+		var val		= this.val().trim();
 
 		$.each(options, function(key, value){
 			if(!hasError && value){
@@ -65,17 +65,17 @@
 
 					case "username":
 						if(!/^[a-zA-Z0-9]+(?:[ _-][a-zA-Z0-9]+)*$/.test())
-							message= "contained invalid characters";
+							message= "contained invalid characters, only accept ALPHABETS, SPACE, UNDERSCORE & HYPHEN";
 						break;
 
 					case "name":
 						if(!/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/.test(val))
-							message= "contained invalid characters";
+							message= "contained invalid characters, only accept ALPHABETS, SPACE & SINGLE-QUOTE";
 						break;
 
 					case "ip":
 						if(!/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/.test(val))
-							message= "invalid format for ip address";
+							message= "invalid ip address format";
 						break;
 				}
 

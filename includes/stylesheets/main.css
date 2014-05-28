@@ -39,6 +39,6 @@ form#logoutform{ display: inline; }
 	font-weight:	600;
 }
 .info{ color: cornflowerblue; }
-.success{ color: #00cc00; }
+.success{ color: #339900; }
 .error, .fail{ color: red; }
 

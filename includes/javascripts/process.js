@@ -3,8 +3,8 @@ function submitLoginForm(){
 		clearErrorMessages();
 		var results= [];
 
-		results.push($("#username").validate("username", { require:	true, username:	true, minLength: 4 }));
-		results.push($("#password").validate("password", { require:	true }));
+		results.push($("#username").validate("username", { require:	true, username:	true, range: [ 4, 20 ] }));
+		results.push($("#password").validate("password", { require:	true, range: [ 6, 25 ] }));
 
 		var result= getResult(results);
 
@@ -18,8 +18,8 @@ function submitRegisterForm(){
 
 		var results	= [];
 
-		results.push($("#username").validate("username", { require: true, username: true }));
-		results.push($("#password").validate("password", { require: true }));
+		results.push($("#username").validate("username", { require: true, username: true, range: [ 4, 20 ] }));
+		results.push($("#password").validate("password", { require: true, range: [ 6, 25 ] }));
 		results.push($("#passwordconf").validate("password confirmation", { require: true, equals: $("#password").val() }));
 		results.push($("#name").validate("name", { require: true, name: true }));
 		results.push($("#email").validate("email", { require: true, email: true }));
@@ -32,7 +32,7 @@ function submitRegisterForm(){
 		//results.push($("#").validate("", {}));
 
 		var result	= getResult(results);
-		
+
 		return result;
 	});
 }

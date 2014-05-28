@@ -71,17 +71,17 @@
 			$info= explode(";;", $infos[$i]);
 			$users[$info[0]]= array(
 				"username"	=> $info[0],
-				"role"		=> $info[1],
-				"name"		=> $info[2],
-				"email"		=> $info[3],
-				"password"	=> $info[4],
+				"password"	=> $info[1],
+				"role"		=> $info[2],
+				"name"		=> $info[3],
+				"email"		=> $info[4],
 				"address"	=> $info[5],
 				"postcode"	=> $info[6],
 				"city"		=> $info[7],
 				"holdername"=> $info[8],
-				"cardNo"	=> $info[9],
+				"cardno"	=> $info[9],
 				"cvv"		=> $info[10],
-				"expirationDate"=> $info[11]);
+				"expirationdate"=> $info[11]);
 		}
 
 		return $users;

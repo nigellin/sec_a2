@@ -3,12 +3,12 @@
 
 	include PATH.'layouts/header.php';
 
-	if(empty($_SESSION["user"])):
+	if(valid_session("user")):
 ?>
 
 <?php
 	else:
-		echo "<h3 class='error'>ERROR: invalid access</h3>";
+		html_span_error(INVALID_ACCESS);
 	endif;
 
 	clear_temp_sessions();

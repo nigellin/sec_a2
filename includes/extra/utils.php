@@ -1,5 +1,7 @@
 <?php
 	define("PATH", "includes/");
+	define("INVALID_ACCESS", "ERROR: invalid access");
+	define("ADMIN_REQUIRE", "ERROR: require admin permission");
 
 	function html_inputfield($id, $attr= array(),  $label= "", $label_atrr= array(), $to_string= false){
 		if($label)
@@ -81,7 +83,16 @@
 		echo $output;
 	}
 
-	function html_span_error($id, $to_string= false){
+	function html_span_error($message, $to_string= false){
+		$span= "<span class=\"error\">$message</span>";
+
+		if($to_string)
+			return $span;
+
+		echo $span;
+	}
+
+	function html_span_error_session($id, $to_string= false){
 		$span= "<span class=\"error\">".$_SESSION["errors"][$id]."</span>";
 
 		if($to_string)
@@ -102,19 +113,23 @@
 		$thead.= "</tr></thead>";
 
 		$tbody= "<tbody>";
-		foreach($data as $value):
-			$tbody.="<tr>";
+		if(!empty($data))
+			foreach($data as $value):
+				$tbody.="<tr>";
 
-			if(is_array($value))
-				foreach($value as $v)
-					$tbody.= "<td>$v</td>";
-			else
-				$tbody.="<td>$value</td>";
+				if(is_array($value))
+					foreach($value as $v)
+						$tbody.= "<td>$v</td>";
+				else
+					$tbody.="<td>$value</td>";
 
-			$input_val= !empty($arr_key)? $value[$arr_key]: $value;
+				$input_val= !empty($arr_key)? $value[$arr_key]: $value;
 
-			$tbody.="<td><input type='checkbox' name='checked[]' value='".$input_val."'/></td></tr>";
-		endforeach;
+				$tbody.="<td><input type='checkbox' name='selected[]' value='".$input_val."'/></td></tr>";
+			endforeach;
+		else
+			$tbody.= "<tr><td colspan='".count($th)."'><center><i>no data entry</i></center></td></tr>";
+
 		$tbody.="</tbody>";
 
 		$tfoot= "<tfoot><tr><td colspan='".(count($th)+ 1)."'><center>";
@@ -187,9 +202,61 @@
 	function valid_name($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/", $val); }
 	function valid_ip($val){ return filter_var($val, FILTER_VALIDATE_IP); }
 
-	// array_walk($_POST, "validate_array_values", array());
-	function validate_value($value, $key, $para= array()){
+	function validate($value, $key, $para= array()){
+		foreach($para as $k=> $v):
+			if(!has_error($k)){
+				$m= "valid_".$k;
 
+				switch($k){
+					case "require":
+						if(!$m($value))
+							$msg= "value cannot be empty";
+						break;
+
+					case "email":
+						if(!$m($value))
+							$msg= "invalid email format";
+						break;
+
+					case "length":
+						if(!$m($value, $v))
+							$msg= "require exact $v characters";
+						break;
+
+					case "range":
+						if(!$m($value, $v[0], $v[1]))
+							$msg= "require between ".$v[0]." to ".$v[1]." characters";
+						break;
+
+					case "equals":
+						if(!$m($value, $v))
+							$msg= "is not matched";
+						break;
+
+					case "unsignedint":
+						if(!$m($value))
+							$msg= "require unsigned digits";
+						break;
+
+					case "username":
+						if(!$m($value))
+							$msg= "contained invalid characters, only accept ALPHABETS, SPACE, UNDERSCORE & HYPHEN";
+						break;
+
+					case "name":
+						if($m($value))
+							$msg= "contained invalid characters, only accept ALPHABETS, SPACE & SINGLE-QUOTE";
+						break;
+					case "ip":
+						if(!$m($value))
+							$msg= "invalid ip address format";
+						break;
+				}
+
+				if(!empty($msg))
+					set_error($key, $msg);
+			}
+		endforeach;
 	}
 
 	function file_to_array($filename){
@@ -198,11 +265,38 @@
 		return $info;
 	}
 
-	function file_write_content($filename, $data, $flags= 0){
-		if(is_array($data))
-			$data= join(";;", $data."\n");
+	function file_write_array_contents($filename, $data, $flags= FILE_APPEND){
+		if(is_array($data)){
+			if(has_inner_array($data))
+				foreach($data as $value)
+					file_write_array_contents($filename, $value, $flags);
+			else{
+				$data = join(";;", $data);
+				file_write_array_contents($filename, $data, $flags);
+			}
+		}else{
+			$data.= PHP_EOL;
+			file_put_contents($filename, $data, $flags);
+		}
+	}
 
-		return file_put_contents($filename, $data, $flags);
+	function file_write_contents($filename, $data, $flags= FILE_APPEND){
+		if(is_array($data))
+			foreach($data as $value)
+				file_write_contents($filename, $value, $flags);
+		else{
+			$data.= PHP_EOL;
+			file_put_contents($filename, $data, $flags);
+		}
+	}
+
+	function file_clear_contents($filename){
+		file_put_contents($filename, "");
+	}
+
+	function file_update_all($filename, $data, $flags= null){
+		file_clear_contents($filename);
+		file_write_array_contents($filename, $data, $flags);
 	}
 
 	function is_assoc_array($array){
@@ -231,6 +325,13 @@
 		$_SESSION["errors"][$key]= $message;
 	}
 
+	function valid_session_user($role= "NORMAL"){
+		if(valid_session("user") && $_SESSION["user"]["role"]== $role)
+			return true;
+
+		return false;
+	}
+
 	function valid_session($id){
 		if(!empty($_SESSION[$id]))
 			return true;
@@ -245,4 +346,12 @@
 			return $tab;
 
 		echo $tab;
+	}
+
+	function has_inner_array($arr){
+		foreach($arr as $value)
+			if(is_array($value))
+				return true;
+
+		return false;
 	}

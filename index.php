@@ -3,7 +3,6 @@
 	include 'includes/layouts/header.php';
 ?>
 
-
 <script>
 	$(document).ready(function(){
 		submitLoginForm();
@@ -14,13 +13,13 @@
 	<span>
 		<?php
 			html_inputfield("username", array("maxLength"=> "25", "value"=> $_SESSION["temp"]["username"]), "Username");
-			html_span_error("username");
+			html_span_error_session("username");
 		?>
 	</span>
 	<span>
 		<?php
 			html_inputfield("password", array("maxLength"=> "25", "type"=> "password"), "Password");
-			html_span_error("password");
+			html_span_error_session("password");
 		?>
 	</span>
 	<span style="width: 200px;"><hr/></span>
@@ -32,7 +31,7 @@
 			html_link("REGISTER", "register.php");
 		?>
 	</span>
-	<?php html_span_error("message"); ?>
+	<?php html_span_error_session("message"); ?>
 </form>
 
 <?php
