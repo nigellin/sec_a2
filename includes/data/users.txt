@@ -1,2 +1,1 @@
-abcd;;efg;;hij;;kellkj;kjlkj
-123;;234123;;1234;;3452341678;;567456
+abc;;NORMAL;;

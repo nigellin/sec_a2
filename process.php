@@ -22,8 +22,8 @@
 			case "logout":
 				unset($_SESSION["user"]);
 
-				echo "<h3 class='success'>logged out success</h3>";
-				echo "<h3 class='success'>redirect to index within 3 seconds...</h3>";
+				echo "<span class='success'>logged out success</span>";
+				echo "<span class='success'>redirect to index within 3 seconds...</span>";
 
 				redirect("index.php", 3);
 
@@ -33,9 +33,38 @@
 				if($_SESSION['user']['role']=== "ADMIN"){
 
 				}
+
 				break;
 
 			case "updateipblacklist":
+				//if($_SESSION["user"]["role"]== "ADMIN"){
+					switch($_POST["action"]){
+						case "add":
+							if(valid_require($_POST["ip"]) && valid_ip($_POST["ip"])){
+								file_write_content(PATH."data/ip_blacklist.txt", $_POST["ip"]."\n", FILE_APPEND | LOCK_EX);
+
+								echo "<span class='success'>new ip address is added</span>";
+								echo "<span class='success'>redirect back within 3 seconds...</span>";
+							}
+
+							break;
+
+						case "remove":
+
+							if(empty($_POST["checked"])){
+								$ips= get_ip_blacklist();
+
+								foreach($_POST["checked"] as $k)
+									unset($ips[$k]);
+
+								file_write_content(PATH."data/ip_blacklist.txt", $ips);
+							}
+
+
+							break;
+					}
+
+				//}
 
 				break;
 		}
@@ -47,4 +76,4 @@
 
 		redirect($url);
 	}else
-		echo "<dpan class='error'>ERROR: invalid access</span>";
+		echo "<span class='error'>ERROR: invalid access</span>";

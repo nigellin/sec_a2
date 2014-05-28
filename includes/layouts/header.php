@@ -9,7 +9,8 @@
 		<script src=<?php echo PATH."javascripts/jquery-2.1.1.min.js"; ?>></script>
 		<script src=<?php echo PATH."javascripts/functions.js"; ?>></script>
 		<script src=<?php echo PATH."javascripts/crypto.js"; ?>></script>
-
+		<script src=<?php echo PATH."javascripts/process.js"; ?>></script>
+		
 		<?php echo $layout["head_content"]; ?>
 	</head>
 	<body>

@@ -13,7 +13,7 @@
 <?php
 	if(valid_session("user")):
 		if($_SESSION["user"]["role"]== "ADMIN"){
-			html_table_form(get_transactions(), array("Transaction Id", "Username", "Date", "Amount", "Status", ""),
+			html_table_form(get_transactions(), array("Transaction Id", "Username", "Date", "Amount", "Status"), "id",
 				array("method"=> "post", "action"=> "process.php?action=updatetransactions"),
 				array("<input type='submit' name='result' value='approve'/>",
 					"<input type='submit' name='result' value='reject'/>",

@@ -81,9 +81,16 @@
 		echo $output;
 	}
 
-	function html_span_error($id){ echo "<span class=\"error\">".$_SESSION["errors"][$id]."</span>"; }
+	function html_span_error($id, $to_string= false){
+		$span= "<span class=\"error\">".$_SESSION["errors"][$id]."</span>";
 
-	function html_table_form($data, $th, $form_attr, $tfoot_val){
+		if($to_string)
+			return $span;
+
+		echo $span;
+	}
+
+	function html_table_form($data, $th, $arr_key, $form_attr, $tfoot_val){
 		$form_attr= to_attr_str($form_attr);
 
 		$form= "<form $form_attr>";
@@ -97,13 +104,20 @@
 		$tbody= "<tbody>";
 		foreach($data as $value):
 			$tbody.="<tr>";
-			foreach($value as $v)
-				$tbody.= "<td>$v</td>";
-			$tbody.="<td><input type='checkbox' name='checked[]' value='".$value['id']."'/></td></tr>";
+
+			if(is_array($value))
+				foreach($value as $v)
+					$tbody.= "<td>$v</td>";
+			else
+				$tbody.="<td>$value</td>";
+
+			$input_val= !empty($arr_key)? $value[$arr_key]: $value;
+
+			$tbody.="<td><input type='checkbox' name='checked[]' value='".$input_val."'/></td></tr>";
 		endforeach;
 		$tbody.="</tbody>";
 
-		$tfoot= "<tfoot><tr><td colspan='".count($th)."'><center>";
+		$tfoot= "<tfoot><tr><td colspan='".(count($th)+ 1)."'><center>";
 		foreach($tfoot_val as $value)
 			$tfoot.= $value;
 		$tfoot.= "</center></td></tr></tfoot>";
@@ -172,7 +186,12 @@
 	function valid_username($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ _-][a-zA-Z0-9]+)*$/", $val); }
 	function valid_name($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/", $val); }
 	function valid_ip($val){ return filter_var($val, FILTER_VALIDATE_IP); }
-	
+
+	// array_walk($_POST, "validate_array_values", array());
+	function validate_value($value, $key, $para= array()){
+
+	}
+
 	function file_to_array($filename){
 		$info= file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
 
@@ -181,9 +200,9 @@
 
 	function file_write_content($filename, $data, $flags= 0){
 		if(is_array($data))
-			$data= join(";;", $data);
+			$data= join(";;", $data."\n");
 
-		file_put_contents($filename, $data, $flags);
+		return file_put_contents($filename, $data, $flags);
 	}
 
 	function is_assoc_array($array){
@@ -207,7 +226,7 @@
 	}
 
 	function has_errors(){ return !empty($_SESSION["errors"]); }
-
+	function has_error($key){ return !empty($_SESSION["errors"][$key]); }
 	function set_error($key, $message){
 		$_SESSION["errors"][$key]= $message;
 	}

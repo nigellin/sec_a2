@@ -51,14 +51,14 @@
 		return $results;
 	}
 
-	function get_blocked_ip(){
+	function get_ip_blacklist(){
 		$ips= file_to_array(PATH."data/ip_blacklist.txt");
 
 		return $ips;
 	}
 
 	function is_blocked_ip($ip){
-		if(in_array($ip, get_blocked_ip()))
+		if(in_array($ip, get_ip_blacklist(), false))
 			return true;
 
 		return false;

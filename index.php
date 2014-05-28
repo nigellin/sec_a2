@@ -3,7 +3,7 @@
 	include 'includes/layouts/header.php';
 ?>
 
-<script src=<?php echo PATH."javascripts/process.js"; ?>></script>
+
 <script>
 	$(document).ready(function(){
 		submitLoginForm();

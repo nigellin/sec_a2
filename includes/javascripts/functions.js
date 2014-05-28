@@ -8,7 +8,8 @@
 		email:		false,
 		username:	false,
 		name:		false,
-		equals:		false
+		equals:		false,
+		ip:			false
 	};
 
 	$.fn.validate= function(label, options){
@@ -71,6 +72,11 @@
 						if(!/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/.test(val))
 							message= "contained invalid characters";
 						break;
+
+					case "ip":
+						if(!/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/.test(val))
+							message= "invalid format for ip address";
+						break;
 				}
 
 				if(message.length> 0)
@@ -79,7 +85,7 @@
 		});
 
 		if(message.length> 0){
-			this.after("<span class='error'>"+ message+"</span>");
+			this.nextAll("span.error").html(message);
 		}
 
 		return !hasError;
@@ -87,7 +93,7 @@
 }(jQuery));
 
 function clearErrorMessages(){
-	$(".error").remove();
+	$("span.error").html("");
 };
 
 function getResult(arr){
