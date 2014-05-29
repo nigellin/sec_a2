@@ -25,7 +25,6 @@
 	<span style="width: 200px;"><hr/></span>
 	<span>
 		<?php
-			html_inputfield("key", array("type"=> "hidden"));
 			html_submit_button("Login");
 			insert_tab();
 			html_link("REGISTER", "register.php");
@@ -43,6 +42,8 @@
 		html_logout_button();
 	else:
 		html_link("PROFILE", "profile.php");
+		insert_tab();
+		html_link("PURCHASE", "purchase.php");
 		insert_tab();
 		html_link("TRANSACTION", "transaction.php");
 		insert_tab();

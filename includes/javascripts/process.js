@@ -27,7 +27,7 @@ function submitRegisterForm(){
 		results.push($("#postcode").validate("post code", { require: true, unsignedint: true, length: 4 }));
 		results.push($("#city").validate("city", { require: true, name: true }));
 		results.push($("#holdername").validate("holder's name", { require: true, name: true }));
-		results.push($("#cardno").validate("card number", { require: true, unsignedint: true, range: [12, 19] }));
+		results.push($("#cardno").validate("card number", { require: true, unsignedint: true, range: [12, 19], creditcard: true }));
 		results.push($("#cvv").validate("cvv", { require: true, unsignedint: true, range: [3, 4] }));
 
 		if($("#month").val()=== "Month" || $("#year").val()=== "Year"){

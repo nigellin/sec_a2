@@ -39,27 +39,34 @@
 				validate($_POST["cvv"], "cvv", array("require"=> true));
 
 				if(!has_errors()){
-					$data= array(
-						$_POST["username"],
-						$_POST["password"],
-						"NORMAL",
-						$_POST["name"],
-						$_POST["email"],
-						$_POST["address"],
-						$_POST["city"],
-						$_POST["postcode"],
-						$_POST["city"],
-						$_POST["holdername"],
-						$_POST["cardno"],
-						$_POST["cvv"],
-						$_POST["month"]+ $_POST["year"]);
 
-					file_write_array_contents(PATH."data/users.txt", $data, FILE_APPEND);
+					//$result= transaction(0, $_POST["holdername"], $_POST["cardno"], $_POST["cvv"], $_POST["month"].$_POST["year"]);
 
-					html_span_success("registered");
-					html_span_info("redirect to login page within 3 seconds...<br/>");
+					//if($result["status"]== "baddata")
+					//	set_error("cardno", $result["errortype"]);
 
-					redirect("index.php", 3);
+					if(!has_errors()){
+						$data= array(
+							$_POST["username"],
+							$_POST["password"],
+							"NORMAL",
+							$_POST["name"],
+							$_POST["email"],
+							$_POST["address"],
+							$_POST["postcode"],
+							$_POST["city"],
+							$_POST["holdername"],
+							$_POST["cardno"],
+							$_POST["cvv"],
+							$_POST["month"]+ $_POST["year"]);
+
+						file_write_array_contents(PATH."data/users.txt", $data, FILE_APPEND);
+
+						html_span_success("registered");
+						html_span_info("redirect to login page within 3 seconds...<br/>");
+
+						redirect("index.php", 3);
+					}
 				}
 
 				$url= "register.php";
@@ -82,7 +89,7 @@
 					foreach($_POST["selected"] as $value)
 						$data[$value]["status"]= $_POST["action"];
 
-					print_r(file_write_array_contents(PATH."data/transactions.txt", $data));
+					file_write_array_contents(PATH."data/transactions.txt", $data);
 
 					html_span_success("updated transactions<br/>");
 					html_span_info("redirect to login page within 3 seconds...");
@@ -124,12 +131,43 @@
 							break;
 					}
 
-					echo "<span class='info'>redirect back within 3 seconds...</span>";
+					html_span_info("redirect back within 3 seconds...");
 					redirect("ipblacklist.php", 3);
 				}else
 					html_span_error(ADMIN_REQUIRE);
 
 				break;
+				case "purchase":
+					validate($_POST["selected"], "message", array("require"=> true));
+
+					if(!has_errors()){
+						$amount= 0;
+						foreach($_POST["selected"] as $value)
+							$amount+= $value;
+
+						$data[]=array(
+							get_transaction_id(),
+							$_SESSION["user"]["username"],
+							date("d/m/Y D, h:i:s"),
+							$amount,
+							"pending");
+
+//						$result= transaction($amount);
+//
+//						if($result["status"]== "baddata")
+//							set_error("message", $result["errortype"]);
+
+						if(!has_errors()){
+							file_write_array_contents(PATH."data/transactions.txt", $data, FILE_APPEND);
+
+							html_span_success("purchased success<br/>");
+							redirect("transaction.php", 3);
+						}
+					}
+
+					$url= "purchase.php";
+
+					break;
 		}
 
 		if(has_errors()){

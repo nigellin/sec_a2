@@ -4,7 +4,7 @@
 	include 'includes/layouts/header.php';
 	if(!valid_session("user")):
 ?>
-<script src=<?php echo PATH."javascripts/process.js"; ?>></script>
+<script src=<?php echo PATH."javascripts/jquery.creditCardValidator.js"; ?>></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -56,7 +56,7 @@
 
 	<span>
 		<?php
-			html_inputfield("postcode", array("maxLength"=> "4", "style"=>"width: 50px;", "value"=> $_SESSION["temp"]["name"]), "Post Code");
+			html_inputfield("postcode", array("maxLength"=> "4", "style"=>"width: 50px;", "value"=> $_SESSION["temp"]["postcode"]), "Post Code");
 			html_span_error_session("postcode");
 		?>
 	</span>

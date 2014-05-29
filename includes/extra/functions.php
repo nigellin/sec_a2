@@ -41,12 +41,24 @@
 		return $results;
 	}
 
+	function get_transaction_id(){
+		$data	= get_transactions();
+		$id		= 0;
+
+		if(!empty($data))
+			foreach($data as $value)
+				$id= max($value["id"], $id);
+
+		return $id+ 1;
+	}
+
 	function get_transactions_by_username($username){
 		$infos= get_transactions();
 
-		foreach($infos as $value)
-			if($value["username"]== $username)
-				$results[]= $value;
+		if(!empty($infos))
+			foreach($infos as $value)
+				if($value["username"]== $username)
+					$results[]= $value;
 
 		return $results;
 	}
@@ -106,4 +118,27 @@
 	function clear_temp_sessions(){
 		unset($_SESSION["temp"]);
 		unset($_SESSION["errors"]);
+	}
+
+	function transaction($amount, $name= "", $cc="", $cvv="", $date= ""){
+		$params['custid'] = 's3287015' ;
+		$params['password'] = '2a20ebefea';
+		$params['demo'] = 'y';
+
+		$params['action'] = 'sale';
+		$params['media'] = 'cc';
+		$params['cc']	= !empty($cc)? $cc: $_SESSION["user"]["cardno"];
+		$params["cvv"]	= !empty($cvv)? $cvv:$_SESSION["user"]["cvv"];
+		$params['exp']	= !empty($date)? $date: $_SESSION["expirationdate"];
+		$params['amount'] = $amount;
+		$params['name'] = !empty($name)? $name: $_SESSION["user"]["holdername"];
+
+		include PATH."extra/Snoopy.class.php";
+		$snoopy = new Snoopy;
+		$submit_url = "http://goanna.cs.rmit.edu.au/~ronvs/TCLinkGateway/process.php";
+
+		if(!($snoopy->submit($submit_url, $params)))
+			die("Failed fetching document: ".$snoopy->error."\n");
+
+		return unserialize($snoopy->results);
 	}

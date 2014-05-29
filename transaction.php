@@ -1,5 +1,5 @@
 <?php
-	$layout["title"]= "Home Page";
+	$layout["title"]= "Transaction Page";
 	include 'includes/layouts/header.php';
 ?>
 
@@ -25,9 +25,13 @@
 		html_logout_button();
 
 	elseif(valid_session("user")):
-		html_table(get_transactions_by_username($_SESSION["user"]), array("Transaction Id", "Username", "Date", "Amount", "Status"));
+		html_table(get_transactions_by_username($_SESSION["user"]["username"]), array("Transaction Id", "Username", "Date", "Amount", "Status"));
 
 		html_link("HOME", "index.php");
+		insert_tab();
+		html_link("PROFILE", "profile.php");
+		insert_tab();
+		html_link("PURCHASE", "purchase.php");
 		insert_tab();
 		html_logout_button();
 	else:

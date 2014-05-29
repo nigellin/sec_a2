@@ -9,7 +9,8 @@
 		username:	false,
 		name:		false,
 		equals:		false,
-		ip:			false
+		ip:			false,
+		creditcard:	false
 	};
 
 	$.fn.validate= function(label, options){
@@ -17,6 +18,7 @@
 		var message	= "";
 		var hasError= false;
 		var val		= this.val().trim();
+		var _this	= this;
 
 		$.each(options, function(key, value){
 			if(!hasError && value){
@@ -76,6 +78,12 @@
 					case "ip":
 						if(!/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/.test(val))
 							message= "invalid ip address format";
+						break;
+					case "creditcard":
+						_this.validateCreditCard(function(result){
+							if(!result.luhn_valid || !result.length_valid)
+								message= "invalid credit card number";
+						});
 						break;
 				}
 

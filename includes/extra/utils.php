@@ -94,7 +94,7 @@
 		return "<span class='$class'>$message</span>";
 	}
 
-	function html_span_error($message, $to_string= false){
+	function html_span_error($message= "", $to_string= false){
 		$span= html_span($message, "error");
 
 		if($to_string)
@@ -230,6 +230,7 @@
 	function valid_username($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ _-][a-zA-Z0-9]+)*$/", $val); }
 	function valid_name($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ '][a-zA-Z0-9]+)*$/", $val); }
 	function valid_ip($val){ return filter_var($val, FILTER_VALIDATE_IP); }
+	function valid_credit($val){};
 
 	function validate($value, $key, $para= array()){
 		foreach($para as $k=> $v):
@@ -239,7 +240,7 @@
 				switch($k){
 					case "require":
 						if(!$m($value))
-							$msg= "value cannot be empty";
+							$msg= "require non-empty value";
 						break;
 
 					case "email":
@@ -277,11 +278,11 @@
 						}
 
 						break;
-
 					case "name":
 						if(!$m($value))
 							$msg= "contained invalid characters, only accept ALPHABETS, SPACE & SINGLE-QUOTE";
 						break;
+
 					case "ip":
 						if(!$m($value))
 							$msg= "invalid ip address format";
