@@ -1,4 +1,6 @@
 <?php
+	require_once "includes/extra/functions.php";
+
 	define("PATH", "includes/");
 	define("INVALID_ACCESS", "ERROR: invalid access");
 	define("ADMIN_REQUIRE", "ERROR: require admin permission");
@@ -33,17 +35,22 @@
 
 		if(is_assoc_array($values)):
 			foreach($values as $key=> $value):
-				if($selected== $key)
-					$selected= "selected='true'";
+				$tmp= "";
 
-				$options.= "<option value='$key' $selected>$value</option>";
+				if($selected== $key)
+					$tmp= "selected='true'";
+				else
+					$tmp= "";
+
+				$options.= "<option value='$key' $tmp>$value</option>";
 			endforeach;
 		else:
 			foreach($values as $value):
-				if($selected== $key)
-					$selected= "selected='true'";
+				$tmp= "";
+				if($selected== $value)
+					$tmp= "selected='true'";
 
-				$options.= "<option value='$value' $selected>$value</option>";
+				$options.= "<option value='$value' $tmp>$value</option>";
 			endforeach;
 		endif;
 
@@ -83,8 +90,30 @@
 		echo $output;
 	}
 
+	function html_span($message, $class){
+		return "<span class='$class'>$message</span>";
+	}
+
 	function html_span_error($message, $to_string= false){
-		$span= "<span class=\"error\">$message</span>";
+		$span= html_span($message, "error");
+
+		if($to_string)
+			return $span;
+
+		echo $span;
+	}
+
+	function html_span_success($message, $to_string= false){
+		$span= html_span($message, "success");
+
+		if($to_string)
+			return $span;
+
+		echo $span;
+	}
+
+	function html_span_info($message, $to_string= false){
+		$span= html_span($message, "info");
 
 		if($to_string)
 			return $span;
@@ -93,7 +122,7 @@
 	}
 
 	function html_span_error_session($id, $to_string= false){
-		$span= "<span class=\"error\">".$_SESSION["errors"][$id]."</span>";
+		$span= html_span($_SESSION["errors"][$id], "error");
 
 		if($to_string)
 			return $span;
@@ -195,7 +224,7 @@
 	function valid_require($val){ return !empty($val); }
 	function valid_email($val){ return filter_var($val, FILTER_VALIDATE_EMAIL); }
 	function valid_length($val, $len){ return strlen($val)== $len; }
-	function valid_range($val, $min, $max){ return strlen($val)>= $min && strlne($val)<= $max; }
+	function valid_range($val, $min, $max){ return strlen($val)>= $min && strlen($val)<= $max; }
 	function valid_equals($val, $val1){ return $val=== $val1; }
 	function valid_unsignedint($val){ return filter_var($val, FILTER_VALIDATE_INT) && $val>= 0; }
 	function valid_username($val){ return preg_match("/^[a-zA-Z0-9]+(?:[ _-][a-zA-Z0-9]+)*$/", $val); }
@@ -241,10 +270,16 @@
 					case "username":
 						if(!$m($value))
 							$msg= "contained invalid characters, only accept ALPHABETS, SPACE, UNDERSCORE & HYPHEN";
+						else{
+							$user= get_user($value);
+							if(!empty($user))
+								$msg= "username is no available";
+						}
+
 						break;
 
 					case "name":
-						if($m($value))
+						if(!$m($value))
 							$msg= "contained invalid characters, only accept ALPHABETS, SPACE & SINGLE-QUOTE";
 						break;
 					case "ip":
@@ -252,10 +287,10 @@
 							$msg= "invalid ip address format";
 						break;
 				}
-
-				if(!empty($msg))
-					set_error($key, $msg);
 			}
+
+			if(!empty($msg))
+				set_error($key, $msg);
 		endforeach;
 	}
 
@@ -318,6 +353,7 @@
 		}else
 			header("location: $url");
 	}
+
 
 	function has_errors(){ return !empty($_SESSION["errors"]); }
 	function has_error($key){ return !empty($_SESSION["errors"][$key]); }

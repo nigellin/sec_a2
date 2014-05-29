@@ -28,28 +28,28 @@
 
 					case "length":
 						if(val.length!== value)
-							message= label +" require exact "+ value+ " characters";
+							message= "requires exact "+ value+ " characters";
 
 						break;
 
 					case "minLength":
 						if(val.length< value)
-							message= label+ " require "+ value+ " characters at least";
+							message= "requires "+ value+ " characters at least";
 						break;
 
 					case "maxLength":
 						if(val.length> value)
-							message= label+ " require "+ value+ " characters at most";
+							message= "requires "+ value+ " characters at most";
 						break;
 
 					case "range":
 						if(val.length< value[0] || val.length> value[1])
-							message= label+ " require between "+ value[0]+ " to "+ value[1]+ " characters";
+							message= "requires between "+ value[0]+ " to "+ value[1]+ " characters";
 						break;
 
 					case "unsignedint":
 						if(!/^[0-9]+$/.test(val))
-							message= label+ " require unsigned digits only";
+							message= " requires unsigned digits only";
 
 						break;
 
@@ -84,13 +84,16 @@
 			}
 		});
 
-		if(message.length> 0){
-			this.nextAll("span.error").html(message);
-		}
+		if(message.length> 0)
+			setErrorMessage(this, message);
 
 		return !hasError;
 	};
 }(jQuery));
+
+function setErrorMessage(selector, message){
+	selector.nextAll("span.error").html(message);
+}
 
 function clearErrorMessages(){
 	$("span.error").html("");

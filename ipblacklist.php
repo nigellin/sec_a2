@@ -23,6 +23,12 @@
 				"<input type='submit' value='add' name='action'/>|",
 				"|<input type='submit' value='remove' name='action'/>",
 				html_span_error_session("ip", true)));
+
+		html_link("HOME", "index.php");
+		insert_tab();
+		html_link("TRANSACTION", "transaction.php");
+		insert_tab();
+		html_logout_button();
 	else:
 		html_span_error(ADMIN_REQUIRE);
 	endif;

@@ -33,12 +33,13 @@ tr:nth-child(2n){ background-color: #eeeeee; }
 form#logoutform{ display: inline; }
 
 .error, .success, .fail, .info{
+	font-size:		15px;
 	margin-left:	10px;
 	margin-right:	10px;
 	font-family:	monospace;
-	font-weight:	600;
+	font-weight:	bold;
 }
-.info{ color: cornflowerblue; }
-.success{ color: #339900; }
-.error, .fail{ color: red; }
+.info{ color: #31708f; }
+.success{ color: #3c763d; }
+.error, .fail{ color: #a94442; }
 

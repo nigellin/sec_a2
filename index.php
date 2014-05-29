@@ -12,7 +12,7 @@
 <form method="post" action="process.php?action=login" id="loginform">
 	<span>
 		<?php
-			html_inputfield("username", array("maxLength"=> "25", "value"=> $_SESSION["temp"]["username"]), "Username");
+			html_inputfield("username", array("maxLength"=> "20", "value"=> $_SESSION["temp"]["username"]), "Username");
 			html_span_error_session("username");
 		?>
 	</span>
@@ -35,6 +35,12 @@
 </form>
 
 <?php
+	elseif(valid_session_user("ADMIN")):
+		html_link("IP_BLACKLIST", "ipblacklist.php");
+		insert_tab();
+		html_link("TRANSACTION", "transaction.php");
+		insert_tab();
+		html_logout_button();
 	else:
 		html_link("PROFILE", "profile.php");
 		insert_tab();

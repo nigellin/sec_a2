@@ -36,7 +36,7 @@
 	<span>
 		<?php
 			html_inputfield("name", array("maxLength"=> "25", "value"=> $_SESSION["temp"]["name"]), "Full Name");
-			html_span_error_session("passwordconf");
+			html_span_error_session("name");
 		?>
 	</span>
 
@@ -99,7 +99,7 @@
 			echo "&nbsp;/&nbsp;";
 			html_dropdownbox("year", $year, "Year");
 
-			html_inputfield("expirationDate", array("type"=> "hidden"));
+			html_span_error_session("year");
 		?>
 	</span>
 
@@ -113,7 +113,9 @@
 		?>
 	</span>
 
-	<?php html_span_error_session("message"); ?>
+	<?php
+		html_span_error_session("message");
+	?>
 </form>
 <?php
 	else:

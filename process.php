@@ -10,7 +10,7 @@
 		switch($_GET["action"]){
 			case "login":
 
-				validate($_POST["username"], "username", array("require"=> true, "username"=> true, "range"=> array(4, 20)));
+				validate($_POST["username"], "username", array("require"=> true, "range"=> array(4, 20)));
 				validate($_POST["password"], "password", array("require"=> true, "range"=> array(6, 25)));
 
 				if(!has_errors()){
@@ -24,6 +24,43 @@
 				break;
 
 			case "register":
+				validate($_POST["username"], "username", array("require"=> true, "username"=> true, "range"=> array(4, 20)));
+				validate($_POST["password"], "password", array("require"=> true, "range"=> array(6, 25)));
+				validate($_POST["passwordconf"], "passwordconf", array("require"=> true, "equals"=> $_POST["password"]));
+
+				validate($_POST["name"], "name", array("require"=> true, "name"=> true));
+				validate($_POST["email"], "email", array("require"=> true, "email"=> true));
+				validate($_POST["address"], "address", array("require"=> true));
+				validate($_POST["postcode"], "postcode", array("require"=> true, "length"=> 4, "unsignedint"=> true));
+				validate($_POST["city"], "city", array("require"=> true));
+				validate($_POST["holdername"], "holdername", array("require"=> true));
+
+				validate($_POST["cardno"], "cardno", array("require"=> true));
+				validate($_POST["cvv"], "cvv", array("require"=> true));
+
+				if(!has_errors()){
+					$data= array(
+						$_POST["username"],
+						$_POST["password"],
+						"NORMAL",
+						$_POST["name"],
+						$_POST["email"],
+						$_POST["address"],
+						$_POST["city"],
+						$_POST["postcode"],
+						$_POST["city"],
+						$_POST["holdername"],
+						$_POST["cardno"],
+						$_POST["cvv"],
+						$_POST["month"]+ $_POST["year"]);
+
+					file_write_array_contents(PATH."data/users.txt", $data, FILE_APPEND);
+
+					html_span_success("registered");
+					html_span_info("redirect to login page within 3 seconds...<br/>");
+
+					redirect("index.php", 3);
+				}
 
 				$url= "register.php";
 				break;
@@ -31,8 +68,8 @@
 			case "logout":
 				unset($_SESSION["user"]);
 
-				echo "<span class='success'>logged out success</span>";
-				echo "<span class='success'>redirect to index within 3 seconds...</span>";
+				echo "<span class='success'>logged out</span><br/>";
+				echo "<span class='info'>redirect to index within 3 seconds...</span>";
 
 				redirect("index.php", 3);
 
@@ -40,7 +77,17 @@
 
 			case "updatetransactions":
 				if($_SESSION['user']['role']=== "ADMIN"){
+					$data= get_transactions();
 
+					foreach($_POST["selected"] as $value)
+						$data[$value]["status"]= $_POST["action"];
+
+					print_r(file_write_array_contents(PATH."data/transactions.txt", $data));
+
+					html_span_success("updated transactions<br/>");
+					html_span_info("redirect to login page within 3 seconds...");
+
+					redirect("transaction.php", 3);
 				}
 
 				break;
